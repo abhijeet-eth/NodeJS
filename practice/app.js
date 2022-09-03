@@ -1,26 +1,23 @@
-const http = require('http')
+const EventEmitter = require('events')
 
-//SIngle Page
-// const server = http.createServer((req,res) => {
-//     res.write('Welcome to our webpage')
-//     res.end()
-// })
+const customEmitter= new EventEmitter()
 
-// server.listen(5000)
+//There is On and Emit methods with Event
 
-//Multiple page
-const server = http.createServer((req, res) => {
-    if (req.url === '/') {
-        res.end("Welcome to hoe page")
-    }
-    if (req.url === '/about') {
-        res.end("Here is our short story")
-    }
-    res.end(`
-    <h1> Oops !! </h1>
-    <p> Wrong url </p>
-    <a href ="/">back home </a>
-    `)
+customEmitter.on('response',() => {
+    console.log('data received')
 })
 
-server.listen(5000)
+customEmitter.on('response',() => {
+    console.log('some other logic here')
+})
+
+customEmitter.emit('response')
+
+const customEmitter2= new EventEmitter()
+
+customEmitter2.on('response',(name,id) => {
+    console.log(`data received ${name} and ${id}`)
+})
+
+customEmitter2.emit('response','john',34)
