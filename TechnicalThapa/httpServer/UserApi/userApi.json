@@ -1,0 +1,15 @@
+[
+    {
+        "id":1,
+        "name":"Abhijeet",
+        "surname":"Sinha",
+        "telephone":"435954",
+        "city":"Ranchi"
+    },
+    {"id":2,
+    "name":"Balisti",
+    "surname":"SHarma",
+    "telephone":"75315",
+    "city":"Meta"}
+
+]
