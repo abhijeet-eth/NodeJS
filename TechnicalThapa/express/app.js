@@ -14,8 +14,9 @@ app.get("/", (req, res) => {
     res.send("hello from the express")
 })
 
+//we can also add status code
 app.get("/about", (req, res) => {
-    res.send("hello from the about page")
+    res.status(200).send("hello from the about page")
 })
 
 app.listen(8000, () => {
