@@ -9,7 +9,7 @@ const staticPath = path.join(__dirname, "../public")
 // app.use(express.static(staticPath))
 
 
-//to set the view engine
+//to set the view engine using express
 app.set("view engine", "hbs")
 
 //template engine route
