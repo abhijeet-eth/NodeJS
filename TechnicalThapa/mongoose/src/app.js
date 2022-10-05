@@ -8,10 +8,25 @@ mongoose.connect("mongodb://localhost:27017/abhijeetDatabase")
 const playlistSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        lowercase: true, //validation it will turn name into small letters
+        trim: true, //will remove unnecessary extra spaces
+        minlength: 2, //the name should have  a minimum of 2 characters
+        maxlength: 10 //the name should not have more than 10  characters
     },
-    ctype: String,
-    videos: Number,
+    ctype: {
+        type: String,
+        required: true,
+        enum: ["frontend", "backened", "database"]
+    },
+    videos: {
+        type: Number,
+        validate(value){
+            if (value < 0){
+                throw new Error('videos count should not be negative')
+            }
+        }},
     author: String,
     active: Boolean,
     date: {
@@ -28,7 +43,7 @@ const createDocument = async () => {
     try {
         const reactPlaylist = new Playlist({
             name: "React JS",
-            ctype: "Front End",
+            ctype: "frontend",
             videos: 10,
             author: "ABhijeet Sinha",
             active: true
@@ -36,7 +51,7 @@ const createDocument = async () => {
 
         const mongoosePlaylist = new Playlist({
             name: "Mongoose",
-            ctype: "Database",
+            ctype: "database",
             videos: 32,
             author: "Yoyo",
             active: true
@@ -44,7 +59,7 @@ const createDocument = async () => {
 
         const jsPlaylist = new Playlist({
             name: " JS",
-            ctype: "Front End",
+            ctype: "frontend",
             videos: 100,
             author: " Sinha",
             active: true
@@ -52,7 +67,7 @@ const createDocument = async () => {
 
         const mongoPlaylist = new Playlist({
             name: "Mongo",
-            ctype: "Database",
+            ctype: "database",
             videos: 40,
             author: "Lolo",
             active: true
