@@ -25,7 +25,7 @@ router.post("/add", (req, res, next) => {
 })
 
 router.get("/searchByFirstName", (req,res,next) => {
-    const firstNameQuery = req.query.firstName;
+    const firstNameQuery = req.query.firstName ;
     console.log(firstNameQuery)
     studentModel.find({firstName: firstNameQuery}, (err, response) => {
         if(err) res.send(err);
