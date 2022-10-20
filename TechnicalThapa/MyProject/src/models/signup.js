@@ -1,5 +1,6 @@
 const Mongoose = require("mongoose")
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken")
 
 const signupSchema = new Mongoose.Schema({
     firstName: {
@@ -22,8 +23,17 @@ const signupSchema = new Mongoose.Schema({
     confirmPassword: {
         type: String,
         required: true
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 })
+
+
+
 
 //acting as middleware. In home.js, "/signup" before saving it will first hash the value
 //of password and hashed value will get save in the DB  
@@ -32,11 +42,24 @@ signupSchema.pre("save", async function (next) {
         console.log("I am middleware")
         this.password = await bcrypt.hash(this.password, 10) //'this' refers to schema model
 
-        this.confirmPassword = undefined; //this will not print confirmPassword in database
+        this.confirmPassword = await bcrypt.hash(this.password, 10);
 
     }
     next();
 })
+
+//generating tokens. (Don't know why but can't use async function, rather using .then())
+signupSchema.methods.generateAuthToken = async function () {
+    try {
+        const token = jwt.sign({ _id: this._id.toString() }, "mynameisabhijeetmynameisabhijeet") // it should be min 32 character
+        this.tokens = this.tokens.concat({ token })
+        await this.save();
+        console.log("Token -> ", token)
+        return token;
+    } catch (error) {
+        res.send("error !!!")
+    }
+}
 
 const SignUpPage = Mongoose.model("SignUpPage", signupSchema);
 module.exports = SignUpPage;
